@@ -21,9 +21,12 @@ Installation
    
 API    
 ---   
-POST **/api/join/**  - Registers new user without referral code. Email must be sent in request body.  
+POST **/api/join/**  - Registers new user without referral code. Email must be sent in request body.
+  
 POST **/api/join/{{CODE}}/** - Registers new user with referral code. Email must be sent in request body.
 
 GET **/api/user/** - Gets currently logged in user data.
+
 GET **/api/user/{{CODE}}/** - Gets user data based on {{CODE}} parameter.
+
 POST **/api/user/{{CODE}}/** - Logs in user with given code. Returns user data
