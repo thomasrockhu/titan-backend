@@ -1,7 +1,12 @@
 from django.db.models import Count
 from rest_framework import serializers
-
+from rest_framework.validators import UniqueValidator
 from referrals.models import RegisteredUser
+
+
+class RegistrationSerializer(serializers.Serializer):
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=RegisteredUser.objects.all())])
+
 
 class UserReferralSerializer(serializers.Serializer):
     referral_count = serializers.SerializerMethodField()

@@ -6,7 +6,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from referrals.models import RegisteredUser
-from referrals.serializers import UserReferralSerializer
+from referrals.serializers import UserReferralSerializer, RegistrationSerializer
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -30,8 +30,9 @@ class UserViewSet(viewsets.ViewSet):
         return Response(UserReferralSerializer(user).data)
 
     def register_new(self, request):
-        email = request.POST.get('email')
-        user, created = RegisteredUser.objects.get_or_create(email=email)
+        registration_data = RegistrationSerializer(data=request.data)
+        registration_data.is_valid(raise_exception=True)
+        user, created = RegisteredUser.objects.get_or_create(email=registration_data.validated_data.email)
         if created:
             user.referral_code = self.generate_referral_code()
             user.save()
@@ -41,13 +42,14 @@ class UserViewSet(viewsets.ViewSet):
 
     def register_from_referral(self, request, code):
         referred_by = get_object_or_404(RegisteredUser, referral_code=code)
-        email = request.POST.get('email')
-        user, created = RegisteredUser.objects.get_or_create(email=email)
+        registration_data = RegistrationSerializer(data=request.data)
+        registration_data.is_valid(raise_exception=True)
+        user, created = RegisteredUser.objects.get_or_create(email=registration_data.validated_data.email)
         if created:
             user.referred_by = referred_by
             user.referral_code = self.generate_referral_code()
             user.save()
-            self.notify_with_email(user)
+            # self.notify_with_email(user)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
