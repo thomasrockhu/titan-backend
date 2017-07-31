@@ -1,12 +1,50 @@
-import random, string
+import random, string, calendar, datetime
+from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from referrals.models import RegisteredUser
 from referrals.serializers import UserReferralSerializer, RegistrationSerializer
+
+
+import csv
+
+class ChartViewSet(viewsets.ViewSet):
+    @method_decorator(cache_page(60))
+    def retrieve(self, request):
+        return Response(self.get_chart_from_file())
+
+    def get_chart_from_file(self):
+        reader = csv.reader(open(settings.PATH_TO_CSV_CHART))
+        labels = next(reader)[1:]
+        titan_data = next(reader)[1:]
+        sp500_data = next(reader)[1:]
+        return {
+            'labels': [calendar.timegm(datetime.datetime.strptime(l, '%m/%d/%y').timetuple()) for l in labels],
+            'titan': list(map(float, titan_data)),
+            'sp500': list(map(float, sp500_data)),
+        }
+
+class StatsViewSet(viewsets.ViewSet):
+    @method_decorator(cache_page(60))
+    def retrieve(self, request):
+        return Response(self.get_stats_from_file())
+
+    def get_stats_from_file(self):
+        reader = csv.reader(open(settings.PATH_TO_CSV_STATS))
+        labels = next(reader)[1:]
+        titan_data = next(reader)[1:]
+        sp500_data = next(reader)[1:]
+        return [{
+                'label': labels[i],
+                'titan': float(titan_data[i]),
+                'sp500': float(sp500_data[i]),
+            } for i in range(len(labels))]
 
 
 class UserViewSet(viewsets.ViewSet):

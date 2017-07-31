@@ -124,4 +124,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATIC_URL = '/static/'
+
+PATH_TO_CSV_CHART = os.path.join(BASE_DIR, 'titan-chart.csv')
+PATH_TO_CSV_STATS = os.path.join(BASE_DIR, 'titan-stats.csv')
