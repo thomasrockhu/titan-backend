@@ -32,7 +32,7 @@ class UserViewSet(viewsets.ViewSet):
     def register_new(self, request):
         registration_data = RegistrationSerializer(data=request.data)
         registration_data.is_valid(raise_exception=True)
-        user, created = RegisteredUser.objects.get_or_create(email=registration_data.validated_data.email)
+        user, created = RegisteredUser.objects.get_or_create(email=registration_data.validated_data['email'])
         if created:
             user.referral_code = self.generate_referral_code()
             user.save()
@@ -44,7 +44,7 @@ class UserViewSet(viewsets.ViewSet):
         referred_by = get_object_or_404(RegisteredUser, referral_code=code)
         registration_data = RegistrationSerializer(data=request.data)
         registration_data.is_valid(raise_exception=True)
-        user, created = RegisteredUser.objects.get_or_create(email=registration_data.validated_data.email)
+        user, created = RegisteredUser.objects.get_or_create(email=registration_data.validated_data['email'])
         if created:
             user.referred_by = referred_by
             user.referral_code = self.generate_referral_code()

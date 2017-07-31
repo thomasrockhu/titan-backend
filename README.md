@@ -8,17 +8,22 @@ Requirements
 
 ```
 python3
-postresql
+gunicorn
+postgresql
 nginx
+supervisor
 ```
-Install python requirements with `pip install -r requirements.txt`.
+Also python requirements can be installed with `pip install -r requirements.txt`.
 
 Installation
 ---
 
-    1. Git clone.
-    2. Create settings.py file based on settings_dev
-    3. Setup and start nginx
+    1. Git clone
+    2. Create settings.py file based on settings_dev.py
+    3. Setup environment:
+        1. create DB and run migrations
+        2. setup supervisor to run gunicorn process
+        3. setup nginx
    
 API
 ---
@@ -50,6 +55,15 @@ Email must be sent in request body.
 ```
 {
   "email": [ "Enter a valid email address." ]
+}
+```
+
+**HTTP 400** if email is not unique
+```
+{
+  "email": [
+    "This field must be unique."
+  ]
 }
 ```
   
