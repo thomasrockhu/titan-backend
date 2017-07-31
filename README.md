@@ -44,7 +44,7 @@ Email must be sent in request body.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position = 1 (number) 
+    wait_list_position:1 (number) 
  } 
  ```
 
@@ -84,7 +84,7 @@ Email must be sent in request body.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position = 1 (number) 
+    wait_list_position:1 (number) 
  } 
  ```
 
@@ -108,7 +108,7 @@ Gets currently logged in user data.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position = 1 (number) 
+    wait_list_position:1 (number) 
  } 
  ```
 
@@ -121,7 +121,7 @@ Gets user data based on {{CODE}} parameter.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position = 1 (number) 
+    wait_list_position:1 (number) 
  } 
  ```
 
@@ -140,10 +140,45 @@ Logs in user with given code. Returns user data
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position = 1 (number) 
+    wait_list_position:1 (number) 
  } 
  ```
 
 #### Errors    
     
 **HTTP 404** if user with given code not found
+
+
+### GET: /api/chart/
+Returns data required to draw simple titan/SP-500 chart.
+
+Notes: 
+
+    labels are unix-timestamps in seconds. They can be feed to some date formatter and displayed on chart.
+    all samples are ordered from oldest to newest, and groupped by series.
+    I.e. it means that:
+        labels[0], titan[0] sp500[0] is oldest data we have and represents the same moment in time.
+     
+ 
+#### Response
+ ```
+ {
+    labels: [] Array(number),
+    titan: [] Array(number),
+    sp500: [] Array(number) 
+ } 
+ ```
+  
+### GET: /api/stats/
+Returns data required to display simple titan/SP-500 statistics.
+
+**Note:** it returns array of objects.
+#### Response
+ ```
+ [{
+    label: (text),
+    titan: (number),
+    sp500: (number) 
+ }] 
+ ``` 
+
