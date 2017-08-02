@@ -74,7 +74,7 @@ class UserViewSet(viewsets.ViewSet):
         if created:
             user.referral_code = self.generate_referral_code()
             user.save()
-            self.notify_with_email(user)
+            # self.notify_with_email(user)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
