@@ -58,7 +58,7 @@ coverage.xml
 local_settings.py
 settings_local.py
 settings.py
-static/*
+titan/static/*
 
 
 # Flask stuff:
