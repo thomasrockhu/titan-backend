@@ -1,0 +1,5 @@
+Hello,
+Your code: {{ url }}
+
+-----
+This email was sent by Titan.

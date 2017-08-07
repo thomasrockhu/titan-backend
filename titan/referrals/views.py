@@ -2,6 +2,7 @@ import random, string, calendar, datetime
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 from rest_framework import viewsets
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
@@ -74,7 +75,7 @@ class UserViewSet(viewsets.ViewSet):
         if created:
             user.referral_code = self.generate_referral_code()
             user.save()
-            # self.notify_with_email(user)
+            self.notify_with_email(request.build_absolute_uri(), user.referral_code, user.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
@@ -87,22 +88,28 @@ class UserViewSet(viewsets.ViewSet):
             user.referred_by = referred_by
             user.referral_code = self.generate_referral_code()
             user.save()
-            # self.notify_with_email(user)
+            self.notify_with_email(request.build_absolute_uri(), user.referral_code, user.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
-
-    def notify_with_email(self, user):
-        send_mail(
-            'Welocme to TITAN!',
-            "Here's your referal link",
-            'noreply@titan.com',
-            [user.email],
-            fail_silently=True,
-        )
 
     def generate_referral_code(self, code_length=8):
         code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(code_length))
         while RegisteredUser.objects.filter(referral_code=code).exists():
             code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(code_length))
         return code
+
+
+    def notify_with_email(self, base_url, referral_code, email):
+        template_html = 'email-titan-template.html'
+        template_text = 'email-titan-template.txt'
+
+        context = {'url': '{}?code={}'.format(base_url, referral_code)}
+        plain_msg = render_to_string(template_text, context)
+        html_msg = render_to_string(template_html, context)
+        send_mail(subject='Welcome to Titanvest!',
+                  message=plain_msg,
+                  html_message=html_msg,
+                  from_email='noreply@titanvest.com',
+                  recipient_list=[email],
+                  fail_silently=True)
