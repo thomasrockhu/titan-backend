@@ -12,9 +12,13 @@ class UserReferralSerializer(serializers.Serializer):
     referral_count = serializers.SerializerMethodField()
     referral_code = serializers.CharField()
     wait_list_position = serializers.SerializerMethodField()
+    total_registered = serializers.SerializerMethodField()
 
     def get_referral_count(self, instance):
         return RegisteredUser.objects.filter(referred_by=instance).count()
+
+    def get_total_registered(self, instance):
+        return RegisteredUser.objects.all().count()
 
     def get_wait_list_position(self, instance):
         referral_count = RegisteredUser.objects.filter(referred_by=instance).count()

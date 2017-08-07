@@ -44,7 +44,8 @@ Email must be sent in request body.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position:1 (number) 
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
  } 
  ```
 
@@ -84,7 +85,8 @@ Email must be sent in request body.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position:1 (number) 
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
  } 
  ```
 
@@ -108,7 +110,8 @@ Gets currently logged in user data.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position:1 (number) 
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
  } 
  ```
 
@@ -121,7 +124,8 @@ Gets user data based on {{CODE}} parameter.
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position:1 (number) 
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
  } 
  ```
 
@@ -140,7 +144,8 @@ Logs in user with given code. Returns user data
  {
     referral_count: 0 (number),
     referral_code: CODE132 (string),
-    wait_list_position:1 (number) 
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
  } 
  ```
 
