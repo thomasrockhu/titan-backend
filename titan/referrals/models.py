@@ -7,3 +7,5 @@ class RegisteredUser(models.Model):
     referred_by = models.ForeignKey("RegisteredUser", null=True, default=None, related_name='registered_users')
     referral_code = models.CharField(max_length=8, null=True, default=None)
 
+    def __str__(self):
+        return self.email
