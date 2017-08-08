@@ -137,3 +137,11 @@ PATH_TO_CSV_STATS = os.path.join(BASE_DIR, 'titan-stats.csv')
 if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True
     EMAIL_BACKEND = 'titan.email.DevelEmailBackend'
+
+
+DEFAULT_FROM_EMAIL = ''
+EMAIL_HOST = ''
+EMAIL_PORT = 0
+EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = ''
+EMAIL_USE_TLS = True

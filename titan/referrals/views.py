@@ -92,15 +92,16 @@ class UserViewSet(viewsets.ViewSet):
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
-
-    def generate_referral_code(self, code_length=8):
+    @staticmethod
+    def generate_referral_code(code_length=8):
         code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(code_length))
         while RegisteredUser.objects.filter(referral_code=code).exists():
             code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(code_length))
         return code
 
 
-    def notify_with_email(self, base_url, referral_code, email):
+    @staticmethod
+    def notify_with_email(base_url, referral_code, email):
         template_html = 'email-titan-template.html'
         template_text = 'email-titan-template.txt'
 
@@ -110,6 +111,6 @@ class UserViewSet(viewsets.ViewSet):
         send_mail(subject='Welcome to Titanvest!',
                   message=plain_msg,
                   html_message=html_msg,
-                  from_email='noreply@titanvest.com',
+                  from_email=settings.DEFAULT_FROM_EMAIL,
                   recipient_list=[email],
-                  fail_silently=True)
+                  fail_silently=False)
