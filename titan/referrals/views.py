@@ -106,7 +106,7 @@ class UserViewSet(viewsets.ViewSet):
 
     @staticmethod
     def notify_with_email(base_url, referral_code, email):
-        template_html = 'email-titan-tempelate.html'
+        template_html = 'email-titan-template.html'
         template_text = 'email-titan-template.txt'
 
         context = {'url': '{}?code={}'.format(base_url, referral_code)}
