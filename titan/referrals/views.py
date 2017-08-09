@@ -1,6 +1,7 @@
 import random, string, calendar, datetime
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework import viewsets
@@ -68,6 +69,8 @@ class UserViewSet(viewsets.ViewSet):
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
+
+    @transaction.atomic
     def register_new(self, request):
         registration_data = RegistrationSerializer(data=request.data)
         registration_data.is_valid(raise_exception=True)
@@ -79,6 +82,7 @@ class UserViewSet(viewsets.ViewSet):
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
+    @transaction.atomic
     def register_from_referral(self, request, code):
         referred_by = get_object_or_404(RegisteredUser, referral_code=code)
         registration_data = RegistrationSerializer(data=request.data)
@@ -102,7 +106,7 @@ class UserViewSet(viewsets.ViewSet):
 
     @staticmethod
     def notify_with_email(base_url, referral_code, email):
-        template_html = 'email-titan-template.html'
+        template_html = 'email-titan-tempelate.html'
         template_text = 'email-titan-template.txt'
 
         context = {'url': '{}?code={}'.format(base_url, referral_code)}
