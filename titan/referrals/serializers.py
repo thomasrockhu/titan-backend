@@ -9,6 +9,7 @@ class RegistrationSerializer(serializers.Serializer):
 
 
 class UserReferralSerializer(serializers.Serializer):
+    email = serializers.EmailField()
     referral_count = serializers.SerializerMethodField()
     referral_code = serializers.CharField()
     wait_list_position = serializers.SerializerMethodField()
