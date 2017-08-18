@@ -78,7 +78,7 @@ class UserViewSet(viewsets.ViewSet):
         if created:
             user.referral_code = self.generate_referral_code()
             user.save()
-            self.notify_with_email(request.build_absolute_uri(), user.referral_code, user.email)
+            self.notify_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
@@ -92,7 +92,7 @@ class UserViewSet(viewsets.ViewSet):
             user.referred_by = referred_by
             user.referral_code = self.generate_referral_code()
             user.save()
-            self.notify_with_email(request.build_absolute_uri(), user.referral_code, user.email)
+            self.notify_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
@@ -109,7 +109,7 @@ class UserViewSet(viewsets.ViewSet):
         template_html = 'email-titan-template.html'
         template_text = 'email-titan-template.txt'
 
-        context = {'url': '{}?code={}'.format(base_url, referral_code)}
+        context = {'url': '{}#!/{}'.format(base_url, referral_code)}
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
         send_mail(subject='Welcome to Titanvest!',
