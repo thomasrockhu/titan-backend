@@ -187,3 +187,18 @@ Returns data required to display simple titan/SP-500 statistics.
  }] 
  ``` 
 
+
+### GET: /api/user/detail?email={{email}}&code={{code}}/
+Returns data about user. At least one of [email, code] must be specified
+
+
+#### Response
+ ```
+ {
+    email: email@example.com (string),
+    referral_count: 0 (number),
+    referral_code: CODE132 (string),
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
+ } 
+ ```
