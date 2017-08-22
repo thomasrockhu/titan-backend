@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'join/(?P<code>[\w]+)/$', UserViewSet.as_view({'post': 'register_from_referral'})),
 
     url(r'user/$', UserViewSet.as_view({'get': 'logged_in_details'})),
+    url(r'user/detail/$', UserViewSet.as_view({'get': 'retrieve_detail'})),
     url(r'user/(?P<code>[\w]+)/$', UserViewSet.as_view({'get': 'retrieve', 'post': 'login'})),
     url(r'chart/$', ChartViewSet.as_view({'get': 'retrieve'})),
     url(r'stats/$', StatsViewSet.as_view({'get': 'retrieve'})),
