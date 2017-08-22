@@ -5,7 +5,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework import viewsets
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -63,6 +63,18 @@ class UserViewSet(viewsets.ViewSet):
     def retrieve(self, request, code, *args, **kwargs):
         user = get_object_or_404(RegisteredUser, referral_code=code)
         return Response(UserReferralSerializer(user).data)
+
+    def retrieve_detail(self, request, *args, **kwargs):
+        email = request.query_params.get('email', None)
+        code = request.query_params.get('code', None)
+        if email:
+            user = get_object_or_404(RegisteredUser, email=email)
+            return Response(UserReferralSerializer(user).data)
+        if code:
+            user = get_object_or_404(RegisteredUser, referral_code=code)
+            return Response(UserReferralSerializer(user).data)
+
+        raise ValidationError('Either email or code must be specified')
 
     def login(self, request, code, *args, **kwargs):
         user = get_object_or_404(RegisteredUser, referral_code=code)
