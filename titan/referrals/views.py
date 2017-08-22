@@ -124,7 +124,7 @@ class UserViewSet(viewsets.ViewSet):
         context = {'url': '{}#!/{}'.format(base_url, referral_code)}
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
-        send_mail(subject='Welcome to Titanvest!',
+        send_mail(subject='Welcome to Titan!',
                   message=plain_msg,
                   html_message=html_msg,
                   from_email=settings.DEFAULT_FROM_EMAIL,
