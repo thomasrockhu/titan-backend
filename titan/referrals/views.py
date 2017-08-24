@@ -22,8 +22,11 @@ class ChartViewSet(viewsets.ViewSet):
     def retrieve(self, request):
         period = request.query_params.get('period', 'ALL')
         period = period.upper()
-        return Response(self.get_chart_from_file(period))
-
+        if period in ['1Y', '3Y', '5Y', '10Y', 'YTD', 'ALL']:
+            return Response(self.get_chart_from_file(period))
+        else:
+            raise ValidationError('Invalid period specified')
+        
     def get_chart_from_file(self, period):
         files_map = {
             'YTD': settings.PATH_TO_CSV_CHART_YTD,
