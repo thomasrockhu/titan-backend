@@ -16,18 +16,30 @@ from referrals.serializers import UserReferralSerializer, RegistrationSerializer
 
 import csv
 
+
 class ChartViewSet(viewsets.ViewSet):
     @method_decorator(cache_page(60))
     def retrieve(self, request):
-        return Response(self.get_chart_from_file())
+        period = request.query_params.get('period', 'ALL')
+        period = period.upper()
+        return Response(self.get_chart_from_file(period))
 
-    def get_chart_from_file(self):
-        reader = csv.reader(open(settings.PATH_TO_CSV_CHART))
+    def get_chart_from_file(self, period):
+        files_map = {
+            'YTD': settings.PATH_TO_CSV_CHART_YTD,
+            '1Y': settings.PATH_TO_CSV_CHART_1Y,
+            '3Y': settings.PATH_TO_CSV_CHART_3Y,
+            '5Y': settings.PATH_TO_CSV_CHART_5Y,
+            '10Y': settings.PATH_TO_CSV_CHART_10Y,
+            'ALL': settings.PATH_TO_CSV_CHART_ALL,
+        }
+
+        reader = csv.reader(open(files_map[period]))
         labels = next(reader)[1:]
         titan_data = next(reader)[1:]
         sp500_data = next(reader)[1:]
         return {
-            'labels': [calendar.timegm(datetime.datetime.strptime(l, '%m/%d/%y').timetuple()) for l in labels],
+            'labels': [calendar.timegm(datetime.datetime.strptime(l, '%m/%d/%Y').timetuple()) for l in labels],
             'titan': list(map(float, titan_data)),
             'sp500': list(map(float, sp500_data)),
         }

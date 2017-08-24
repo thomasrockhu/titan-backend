@@ -132,6 +132,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATIC_URL = '/static/'
 
 PATH_TO_CSV_CHART = os.path.join(BASE_DIR, 'titan-chart.csv')
+PATH_TO_CSV_CHART_YTD = os.path.join(BASE_DIR, 'titan-chart-ytd.csv')
+PATH_TO_CSV_CHART_1Y = os.path.join(BASE_DIR, 'titan-chart-1y.csv')
+PATH_TO_CSV_CHART_3Y = os.path.join(BASE_DIR, 'titan-chart-3y.csv')
+PATH_TO_CSV_CHART_5Y = os.path.join(BASE_DIR, 'titan-chart-5y.csv')
+PATH_TO_CSV_CHART_10Y = os.path.join(BASE_DIR, 'titan-chart-10y.csv')
+PATH_TO_CSV_CHART_ALL = os.path.join(BASE_DIR, 'titan-chart-all.csv')
 PATH_TO_CSV_STATS = os.path.join(BASE_DIR, 'titan-stats.csv')
 
 if DEBUG:
