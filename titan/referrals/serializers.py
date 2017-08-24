@@ -22,5 +22,4 @@ class UserReferralSerializer(serializers.Serializer):
         return RegisteredUser.objects.all().count()
 
     def get_wait_list_position(self, instance):
-        referral_count = RegisteredUser.objects.filter(referred_by=instance).count()
-        return RegisteredUser.objects.annotate(referral_count=Count('registered_users')).filter(referral_count__gt=referral_count).count() + 1
+        return RegisteredUser.objects.filter(registration_datetime__lt=instance.registration_datetime).count() + 1
