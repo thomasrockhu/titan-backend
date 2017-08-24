@@ -105,7 +105,7 @@ class UserViewSet(viewsets.ViewSet):
         if created:
             user.referral_code = self.generate_referral_code()
             user.save()
-            self.notify_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
+            self.notify_user_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
@@ -119,7 +119,8 @@ class UserViewSet(viewsets.ViewSet):
             user.referred_by = referred_by
             user.referral_code = self.generate_referral_code()
             user.save()
-            self.notify_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
+            self.notify_user_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
+            self.notify_referrer_with_email(referred_by.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
@@ -132,7 +133,7 @@ class UserViewSet(viewsets.ViewSet):
 
 
     @staticmethod
-    def notify_with_email(base_url, referral_code, email):
+    def notify_user_with_email(base_url, referral_code, email):
         template_html = 'email-titan-template.html'
         template_text = 'email-titan-template.txt'
 
@@ -140,6 +141,21 @@ class UserViewSet(viewsets.ViewSet):
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
         send_mail(subject='Welcome to Titan!',
+                  message=plain_msg,
+                  html_message=html_msg,
+                  from_email=settings.DEFAULT_FROM_EMAIL,
+                  recipient_list=[email],
+                  fail_silently=False)
+
+
+    @staticmethod
+    def notify_referrer_with_email(email):
+        template_html = 'email-titan-template-after-signup.html'
+        template_text = 'email-titan-template-after-signup.txt'
+
+        plain_msg = render_to_string(template_text)
+        html_msg = render_to_string(template_html)
+        send_mail(subject='Thank you!',
                   message=plain_msg,
                   html_message=html_msg,
                   from_email=settings.DEFAULT_FROM_EMAIL,
