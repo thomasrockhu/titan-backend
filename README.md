@@ -154,8 +154,31 @@ Logs in user with given code. Returns user data
 **HTTP 404** if user with given code not found
 
 
-### GET: /api/chart/
-Returns data required to draw simple titan/SP-500 chart.
+
+### GET: /api/user/detail?email={{email}}&code={{code}}/
+Returns data about user. At least one of [email, code] must be specified
+
+
+#### Response
+ ```
+ {
+    email: email@example.com (string),
+    referral_count: 0 (number),
+    referral_code: CODE132 (string),
+    wait_list_position:1 (number),
+    total_registered: 100 (number)
+ } 
+ ```
+ 
+#### Errors    
+    
+**HTTP 400** if neither email nor code is specified
+
+**HTTP 404** if user with given email/code is not found
+ 
+### GET: /api/chart?period={{period}}/
+Returns data required to draw simple titan/SP-500 chart for specified period. 
+Period should be one of the following: `[1y, 3y, 5y, 10y, ytd, all]`. If no period is specified then data for `all` is returned.
 
 Notes: 
 
@@ -173,7 +196,13 @@ Notes:
     sp500: [] Array(number) 
  } 
  ```
+
   
+#### Errors    
+    
+**HTTP 400** if invalid period is specified
+
+
 ### GET: /api/stats/
 Returns data required to display simple titan/SP-500 statistics.
 
@@ -187,18 +216,3 @@ Returns data required to display simple titan/SP-500 statistics.
  }] 
  ``` 
 
-
-### GET: /api/user/detail?email={{email}}&code={{code}}/
-Returns data about user. At least one of [email, code] must be specified
-
-
-#### Response
- ```
- {
-    email: email@example.com (string),
-    referral_count: 0 (number),
-    referral_code: CODE132 (string),
-    wait_list_position:1 (number),
-    total_registered: 100 (number)
- } 
- ```

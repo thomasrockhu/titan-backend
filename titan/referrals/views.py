@@ -26,7 +26,7 @@ class ChartViewSet(viewsets.ViewSet):
             return Response(self.get_chart_from_file(period))
         else:
             raise ValidationError('Invalid period specified')
-        
+
     def get_chart_from_file(self, period):
         files_map = {
             'YTD': settings.PATH_TO_CSV_CHART_YTD,
