@@ -153,7 +153,7 @@ class UserViewSet(viewsets.ViewSet):
         template_html = 'email-titan-template-after-signup.html'
         template_text = 'email-titan-template-after-signup.txt'
 
-        context = {'url': '{}'.format(base_url)}
+        context = {'url': base_url, 'email': email}
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
         send_mail(subject='Thank you!',
