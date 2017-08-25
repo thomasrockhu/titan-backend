@@ -149,11 +149,11 @@ class UserViewSet(viewsets.ViewSet):
 
 
     @staticmethod
-    def notify_referrer_with_email(base_url, referral_code, email):
+    def notify_referrer_with_email(base_url, email):
         template_html = 'email-titan-template-after-signup.html'
         template_text = 'email-titan-template-after-signup.txt'
 
-        context = {'url': '{}#!/{}'.format(base_url, referral_code)}
+        context = {'url': '{}'.format(base_url)}
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
         send_mail(subject='Thank you!',
