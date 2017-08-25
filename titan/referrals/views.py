@@ -120,7 +120,7 @@ class UserViewSet(viewsets.ViewSet):
             user.referral_code = self.generate_referral_code()
             user.save()
             self.notify_user_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
-            self.notify_referrer_with_email(request.build_absolute_uri('/'), user.referral_code, referred_by.email)
+            self.notify_referrer_with_email(request.build_absolute_uri('/'), referred_by.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
