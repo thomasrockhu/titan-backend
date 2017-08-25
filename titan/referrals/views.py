@@ -120,7 +120,7 @@ class UserViewSet(viewsets.ViewSet):
             user.referral_code = self.generate_referral_code()
             user.save()
             self.notify_user_with_email(request.build_absolute_uri('/'), user.referral_code, user.email)
-            self.notify_referrer_with_email(referred_by.email)
+            self.notify_referrer_with_email(request.build_absolute_uri('/'), user.referral_code, referred_by.email)
         request.session['email'] = user.email
         return Response(UserReferralSerializer(user).data)
 
@@ -149,12 +149,13 @@ class UserViewSet(viewsets.ViewSet):
 
 
     @staticmethod
-    def notify_referrer_with_email(email):
+    def notify_referrer_with_email(base_url, referral_code, email):
         template_html = 'email-titan-template-after-signup.html'
         template_text = 'email-titan-template-after-signup.txt'
 
-        plain_msg = render_to_string(template_text)
-        html_msg = render_to_string(template_html)
+        context = {'url': '{}#!/{}'.format(base_url, referral_code)}
+        plain_msg = render_to_string(template_text, context)
+        html_msg = render_to_string(template_html, context)
         send_mail(subject='Thank you!',
                   message=plain_msg,
                   html_message=html_msg,
