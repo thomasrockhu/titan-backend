@@ -1,5 +1,5 @@
 Hello,
-Thank you for referring us!
+Thank you for referring us! You can check your status here: {{ status_url }}
 
 -----
 This email was sent by Titan.
