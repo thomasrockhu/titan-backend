@@ -137,7 +137,8 @@ class UserViewSet(viewsets.ViewSet):
         template_html = 'email-titan-template.html'
         template_text = 'email-titan-template.txt'
 
-        context = {'url': '{}#!/{}'.format(base_url, referral_code)}
+        context = {'url': '{}#!/{}'.format(base_url, referral_code),
+                   'logo_url': '{}/images/Titan_logo.png'.format(base_url)}
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
         send_mail(subject='Welcome to Titan!',
@@ -153,7 +154,8 @@ class UserViewSet(viewsets.ViewSet):
         template_html = 'email-titan-template-after-signup.html'
         template_text = 'email-titan-template-after-signup.txt'
 
-        context = {'status_url': '{}#!/check-status/{}'.format(base_url, email)}
+        context = {'status_url': '{}#!/check-status/{}'.format(base_url, email),
+                   'logo_url': '{}/images/Titan_logo.png'.format(base_url)}
         plain_msg = render_to_string(template_text, context)
         html_msg = render_to_string(template_html, context)
         send_mail(subject='Thank you!',
